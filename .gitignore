@@ -1,4 +1,4 @@
+# Ignore everything in the ‘data’ directory
 data/
-.Rproj.user/
-.Rhistory
-.RData
+# Except for the permitted files
+!data/study_area_test.gpkg
