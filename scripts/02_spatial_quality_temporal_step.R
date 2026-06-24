@@ -16,7 +16,24 @@ library(here)
 # 1. Path configuration and spatial domain definition
 path_stations_txt  <- here("data", "ECA_nonblend_rr", "stations.txt")
 path_daily_parquet <- here("data", "Daily_ECA.parquet")
-path_study_area <- here("data", "study_area.gpkg")
+path_main <- here("data", "study_area.gpkg")
+path_test <- here("data", "study_area_test.gpkg")
+
+# Conditional path selection
+if (file.exists(path_main)) {
+  path_study_area <- path_main
+  message("[INFO] Production study area found. Using: study_area.gpkg")
+  
+} else if (file.exists(path_test)) {
+  path_study_area <- path_test
+  message("[WARNING] Production file not found. Using test study area: study_area_test.gpkg")
+  
+} else {
+  stop("[ERROR] Please place a valid study area (.gpkg) in the 'data' folder and name it 'study_area.gpkg'.")
+}
+
+# Load the file
+study_area <- st_read(path_study_area, quiet = TRUE) %>% st_transform(3035)
 
 # Thresholds
 max_daily_precip <- 1100
